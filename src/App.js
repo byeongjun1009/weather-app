@@ -41,23 +41,46 @@ function App() {
     }
   }, [city])
 
+  const fetchWeatherData = async (url) => {
+    try {
+      // api는 대부분 json. response에서 json을 추출해야 함.
+      let response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      let data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching weather data: ", error);
+      alert("Failed to fetch weather data. Please try again later.");
+      return null;
+    }
+  };
+
   const getWeatherByCurrentLocation = async (lat, lon) => {
     let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=775666a21376eb5e342d413c5e3e74c1&units=metric`
     setLoading(true)
-    let response = await fetch(url)
-    // api는 대부분 json. response에서 json을 추출해야 함.
-    let data = await response.json();
-    setWeather(data)
-    setLoading(false)
+    const data = await fetchWeatherData(url);
+    if (data) {
+      setWeather(data);
+    } else {
+      setWeather(null);
+    }
+    setLoading(false);
   }
 
   const getWeatherByCity = async () => {
     let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=775666a21376eb5e342d413c5e3e74c1&units=metric`
     setLoading(true)
-    let response = await fetch(url)
-    let data = await response.json();
-    setWeather(data)
-    setLoading(false)
+    const data = await fetchWeatherData(url);
+    if (data) {
+      setWeather(data);
+    } else {
+      setWeather(null);
+    }
+    setLoading(false);
   }
 
   return (
