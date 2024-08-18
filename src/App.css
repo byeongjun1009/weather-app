@@ -11,6 +11,11 @@ body {
     align-items: center;
     height: 100vh;
     flex-direction: column;
+    gap: 10px;
+}
+
+.container Button {
+    margin: 5px;
 }
 
 .weather-box {
